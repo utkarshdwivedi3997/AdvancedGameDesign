@@ -13,8 +13,24 @@ public class TargetGeneration : MonoBehaviour {
     public Material mat;
 
 	void Start () {
-        filter = gameObject.AddComponent<MeshFilter>();
-        rend = gameObject.AddComponent<MeshRenderer>();
+        // Utkarsh: Added null checks because the errors were hiding all my debugs lol
+        if (gameObject.GetComponent<MeshFilter>() == null)
+        {
+            filter = gameObject.AddComponent<MeshFilter>();
+        }
+        else
+        {
+            filter = gameObject.GetComponent<MeshFilter>();
+        }
+
+        if (gameObject.GetComponent<MeshRenderer>() == null)
+        {
+            rend = gameObject.AddComponent<MeshRenderer>();
+        }
+        else
+        {
+            rend = gameObject.GetComponent<MeshRenderer>();
+        }
 
         if (isBase == true)
         {

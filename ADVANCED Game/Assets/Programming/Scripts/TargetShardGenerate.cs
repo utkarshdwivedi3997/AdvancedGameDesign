@@ -21,10 +21,27 @@ public class TargetShardGenerate : MonoBehaviour {
     public float speed;
 
     void Start () {
-        
-
         filter = gameObject.AddComponent<MeshFilter>();
         rend = gameObject.AddComponent<MeshRenderer>();
+
+        // Utkarsh: Added null checks because the errors were hiding all my debugs lol
+        /*if (gameObject.GetComponent<MeshFilter>() == null)
+        {
+            filter = gameObject.AddComponent<MeshFilter>();
+        }
+        else
+        {
+            filter = gameObject.GetComponent<MeshFilter>();
+        }
+
+        if (gameObject.GetComponent<MeshRenderer>() == null)
+        {
+            rend = gameObject.AddComponent<MeshRenderer>();
+        }
+        else
+        {
+            rend = gameObject.GetComponent<MeshRenderer>();
+        }*/
 
         rb = GetComponent<Rigidbody>();
         if (bShard == true)
@@ -84,7 +101,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateBottomShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -122,7 +139,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateBottomLeftShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -160,7 +177,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateLeftShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -198,7 +215,8 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateTopLeftShard()
     {
-        Debug.Log("Generating...");
+        // Utkarsh: Commenting out this debug
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -236,7 +254,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateTopShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -274,7 +292,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateTopRightShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -312,7 +330,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateRightShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
         {
@@ -350,7 +368,7 @@ public class TargetShardGenerate : MonoBehaviour {
 
     public void CreateBottomRightShard()
     {
-        Debug.Log("Generating...");
+        //Debug.Log("Generating...");
         Mesh mesh = filter.mesh;
         List<Vector3> verts = new List<Vector3>
             {
