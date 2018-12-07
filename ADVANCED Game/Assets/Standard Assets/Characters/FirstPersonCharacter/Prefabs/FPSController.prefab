@@ -951,6 +951,10 @@ MonoBehaviour:
     m_Bits: 311
   camera: {fileID: 400002}
   weaponAnimator: {fileID: 95469507413084704}
+  zRecoilAmt: 0.1
+  recoilRecoveryTime: 0.3
+  maxZRecoilVal: 0.2
+  maxZRecoilValScoped: 0.01
 --- !u!114 &114565377544567338
 MonoBehaviour:
   m_ObjectHideFlags: 1

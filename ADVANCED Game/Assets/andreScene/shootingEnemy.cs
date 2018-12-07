@@ -22,12 +22,22 @@ public class shootingEnemy : MonoBehaviour {
     private bool isScoped;
     [SerializeField]
     private Animator weaponAnimator;
+
+    // Recoil
+    [SerializeField]
+    private float zRecoilAmt = 0.1f;
+    [SerializeField]
+    private float recoilRecoveryTime = 0.3f;
+    [SerializeField]
+    private float maxZRecoilVal = 0.5f, maxZRecoilValScoped = 0.01f;
+    private float currRecoilZPos, currRecoilZVel;
     void Start()
     {
         playerTransform = transform;
         isScoped = false;
 
         m_MouseLook.Init(transform, camera.transform);
+        currRecoilZPos = 0f;
     }
     void Update()
     {
@@ -38,6 +48,10 @@ public class shootingEnemy : MonoBehaviour {
 
         if (Input.GetButtonDown("Fire1"))
         {
+            // recoil
+            //if (!isScoped)
+            currRecoilZPos -= zRecoilAmt;
+
             //Debug.Log("urDeadKiddo");
             // Changed this line a lil bit
             //if (Physics.Raycast(playerTransform.TransformPoint(new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 1)), playerTransform.forward, out hit, range))
@@ -57,6 +71,9 @@ public class shootingEnemy : MonoBehaviour {
                 }
             }
         }
+        float minRecoil = isScoped ? -maxZRecoilValScoped : -maxZRecoilVal;
+        currRecoilZPos = Mathf.Clamp(currRecoilZPos, minRecoil, 0);
+        currRecoilZPos = Mathf.SmoothDamp(currRecoilZPos, 0, ref currRecoilZVel, recoilRecoveryTime);
 
         // Scope
         if (Input.GetButtonDown("Scope"))
@@ -72,8 +89,14 @@ public class shootingEnemy : MonoBehaviour {
 
         // Mouse cursor
         m_MouseLook.UpdateCursorLock();
+        
     }
 
+    private void LateUpdate()
+    {
+        //Vector3 recoilPos = Quaternion.Euler(weaponAnimator.transform.rotation.x, weaponAnimator.transform.rotation.y, 0) * new Vector3(0, 0, currRecoilZPos);
+        weaponAnimator.transform.position += weaponAnimator.transform.forward * currRecoilZPos;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
