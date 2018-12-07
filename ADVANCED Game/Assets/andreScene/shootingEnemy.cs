@@ -11,6 +11,10 @@ public class shootingEnemy : MonoBehaviour {
     public float range = 400;
 
     private TargetCollision tCollider;
+
+    public float flashTime;
+    public GameObject muzzleFlash;
+    public GameObject shell;
     
     [SerializeField]
     private LayerMask whatIsShootable;
@@ -50,6 +54,7 @@ public class shootingEnemy : MonoBehaviour {
     }
     void Update()
     {
+        flashTime += Time.deltaTime;
         // Mouse look
         m_MouseLook.LookRotation(transform, camera.transform);
         baseRot = weaponAnimator.transform.rotation;
@@ -81,6 +86,17 @@ public class shootingEnemy : MonoBehaviour {
                         //Destroy(hit.transform.gameObject);
                     }
                 }
+            }
+            flashTime = 0;
+            muzzleFlash.SetActive(true);
+            shell.SetActive(false);
+        }
+        else
+        {
+            if (flashTime >= 0.8f)
+            {
+                muzzleFlash.SetActive(false);
+                shell.SetActive(true);
             }
         }
         float minRecoil = isScoped ? -maxZRecoilValScoped : -maxZRecoilVal;
