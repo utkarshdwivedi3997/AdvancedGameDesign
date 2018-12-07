@@ -31,6 +31,12 @@ public class shootingEnemy : MonoBehaviour {
     [SerializeField]
     private float maxZRecoilVal = 0.5f, maxZRecoilValScoped = 0.01f;
     private float currRecoilZPos, currRecoilZVel;
+    private Quaternion baseRot;
+    [SerializeField]
+    private float recoilXRotAmt = 0.1f, recoilYRotAmt = 0.1f;
+    [SerializeField]
+    private float maxXRecoilVal = 0.5f, maxYRecoilVal = 0.5f;
+    private float currRecoilX, currRecoilY, currRecoilXVel, currRecoilYVel;
     void Start()
     {
         playerTransform = transform;
@@ -38,11 +44,15 @@ public class shootingEnemy : MonoBehaviour {
 
         m_MouseLook.Init(transform, camera.transform);
         currRecoilZPos = 0f;
+        currRecoilX = 0f;
+        currRecoilY = 0f;
+        baseRot = weaponAnimator.transform.rotation;
     }
     void Update()
     {
         // Mouse look
         m_MouseLook.LookRotation(transform, camera.transform);
+        baseRot = weaponAnimator.transform.rotation;
 
         //Debug.DrawRay(camera.position, camera.forward * range, Color.green, 0.1f, false);
 
@@ -51,7 +61,9 @@ public class shootingEnemy : MonoBehaviour {
             // recoil
             //if (!isScoped)
             currRecoilZPos -= zRecoilAmt;
-
+            currRecoilX += Random.Range(-recoilXRotAmt, recoilXRotAmt);
+            currRecoilY += Random.Range(-recoilYRotAmt, recoilYRotAmt);
+            //currRecoilY += recoilYRotAmt;
             //Debug.Log("urDeadKiddo");
             // Changed this line a lil bit
             //if (Physics.Raycast(playerTransform.TransformPoint(new Vector3(Random.Range(-1, 1), Random.Range(-1, 1), 1)), playerTransform.forward, out hit, range))
@@ -75,6 +87,11 @@ public class shootingEnemy : MonoBehaviour {
         currRecoilZPos = Mathf.Clamp(currRecoilZPos, minRecoil, 0);
         currRecoilZPos = Mathf.SmoothDamp(currRecoilZPos, 0, ref currRecoilZVel, recoilRecoveryTime);
 
+        currRecoilX = Mathf.Clamp(currRecoilX, -maxXRecoilVal, maxXRecoilVal);
+        currRecoilY = Mathf.Clamp(currRecoilY, -maxYRecoilVal, maxYRecoilVal);
+        currRecoilX = Mathf.SmoothDamp(currRecoilX, 0, ref currRecoilXVel, recoilRecoveryTime);
+        currRecoilY = Mathf.SmoothDamp(currRecoilY, 0, ref currRecoilYVel, recoilRecoveryTime);
+
         // Scope
         if (Input.GetButtonDown("Scope"))
         {
@@ -96,6 +113,14 @@ public class shootingEnemy : MonoBehaviour {
     {
         //Vector3 recoilPos = Quaternion.Euler(weaponAnimator.transform.rotation.x, weaponAnimator.transform.rotation.y, 0) * new Vector3(0, 0, currRecoilZPos);
         weaponAnimator.transform.position += weaponAnimator.transform.forward * currRecoilZPos;
+        weaponAnimator.transform.position += weaponAnimator.transform.right * currRecoilX;
+        weaponAnimator.transform.position += weaponAnimator.transform.up * currRecoilY;
+
+        //weaponAnimator.transform.rotation = Quaternion.Euler(weaponAnimator.transform.rotation.x + currRecoilX, weaponAnimator.transform.rotation.y + currRecoilY, weaponAnimator.transform.rotation.z);
+        //weaponAnimator.transform.Rotate(currRecoilX, currRecoilY, 0);
+        //Quaternion rot = Quaternion.Euler(currRecoilX, currRecoilY, 0);
+        //weaponAnimator.transform.rotation = baseRot * rot; //Quaternion.Slerp(weaponAnimator.transform.rotation, rot, 1);
+        //weaponAnimator.transform.rotation *= Quaternion.RotateTowards(rot, Quaternion.identity, recoilRecoveryTime * Time.deltaTime);
     }
     private void OnDrawGizmos()
     {
