@@ -28,11 +28,6 @@ public class TargetGeneration : MonoBehaviour {
         mCollider = gameObject.AddComponent<MeshCollider>();
         mCollider.convex = true;
 
-        if (isHead)
-        {
-            mCollider.isTrigger = true;
-        }
-
     }
 
     public void CreateTargetBase()

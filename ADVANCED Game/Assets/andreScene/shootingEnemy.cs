@@ -8,6 +8,8 @@ public class shootingEnemy : MonoBehaviour {
     private RaycastHit hit;
     public float range = 400;
 
+    public TargetCollision tCollider;
+
     void Start()
     {
         playerTransform = transform.parent;
@@ -22,7 +24,9 @@ public class shootingEnemy : MonoBehaviour {
             {
                 if (hit.collider.tag == "target")
                 {
-                    Destroy(hit.transform.gameObject);
+                    tCollider = hit.transform.gameObject.GetComponent<TargetCollision>();
+                    tCollider.BreakTarget();
+                    //Destroy(hit.transform.gameObject);
                     Debug.Log("ShotEnemy");
                 }
             }

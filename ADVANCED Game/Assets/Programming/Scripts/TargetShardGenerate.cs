@@ -17,6 +17,8 @@ public class TargetShardGenerate : MonoBehaviour {
     MeshRenderer rend;
     MeshCollider mCollider;
     public Material mat;
+    public Rigidbody rb;
+    public float speed;
 
     void Start () {
         
@@ -24,41 +26,59 @@ public class TargetShardGenerate : MonoBehaviour {
         filter = gameObject.AddComponent<MeshFilter>();
         rend = gameObject.AddComponent<MeshRenderer>();
 
+        rb = GetComponent<Rigidbody>();
         if (bShard == true)
         {
             CreateBottomShard();
+            rb.AddForce(transform.up * -speed);
         }
         else if (blShard == true)
         {
             CreateBottomLeftShard();
+            rb.AddForce(transform.right * -speed);
+            rb.AddForce(transform.up * -speed);
         }
         else if (lShard == true)
         {
             CreateLeftShard();
+            rb.AddForce(transform.right * -speed);
         }
         else if (tlShard == true)
         {
             CreateTopLeftShard();
+            rb.AddForce(transform.right * -speed);
+            rb.AddForce(transform.up * speed);
         }
         else if (tShard == true)
         {
             CreateTopShard();
+            rb.AddForce(transform.up * speed);
         }
         else if (trShard == true)
         {
             CreateTopRightShard();
+            rb.AddForce(transform.right * speed);
+            rb.AddForce(transform.up * speed);
         }
         else if (rShard == true)
         {
             CreateRightShard();
+            rb.AddForce(transform.right * speed);
         }
         else if (brShard == true)
         {
             CreateBottomRightShard();
+            rb.AddForce(transform.right * speed);
+            rb.AddForce(transform.up * -speed);
         }
+
         mCollider = gameObject.AddComponent<MeshCollider>() as MeshCollider;
         mCollider.convex = true;
-        
+        Destroy(this.gameObject, 10);
+    }
+
+    void Update ()
+    {
         
     }
 

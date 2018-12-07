@@ -6,13 +6,20 @@ public class TargetCollision : MonoBehaviour {
 
     public GameObject full;
     public GameObject shards;
+    public GameObject tBase;
+    public TargetSpawner spawner;
 
-    void OnTriggerEnter(Collider other)
+    void Start ()
     {
-        if (other.gameObject.tag == "bullet")
-        {
-            full.SetActive(false);
-            shards.SetActive(true);
-        }
+        spawner = GameObject.FindWithTag("spawner").GetComponent<TargetSpawner>();
+    }
+
+    public void BreakTarget()
+    {
+        full.SetActive(false);
+        shards.SetActive(true);
+        spawner.numOfTargets -= 1;
+
+        Destroy(tBase, 10);
     }
 }
